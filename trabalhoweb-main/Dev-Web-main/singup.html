@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish&display=swap" rel="stylesheet" type='text/css'>
+    <link rel="stylesheet" href="singup.css">
+</head>
+<body>
+    <div class="background"></div>
+    <div class="centering">
+        <form class="my-form">
+            <div class="signup-welcome-row">
+                <img class="signup-welcome" alt="Logo" src="assets/logo.svg">
+                <h1>Criar Conta</h1>
+            </div>
+            <div class="my-form__content">
+                <div class="text-field">
+                    <label for="username">Nome de Usuário:</label>
+                    <input
+                        aria-label="Username"
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Seu Nome de Usuário"
+                        required
+                    >
+                </div>
+                <div class="text-field">
+                    <label for="password">Senha:</label>
+                    <input id="password" type="password" name="password" placeholder="Sua Senha" required>
+                </div>
+                <div class="text-field">
+                    <label for="confirm-password">Confirme Sua Senha:</label>
+                    <input id="confirm-password" type="password" name="confirm-password" placeholder="Repita Sua Senha" required>
+                </div>
+                <input type="submit" class="my-form__button" value="Criar">
+            </div>
+            <div class="my-form__actions">
+                <div class="my-form__signin">
+                    <a href="./login.html" title="Sign In">Voltar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="singup.js"></script>
+</body>
+</html>
