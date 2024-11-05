@@ -10,10 +10,10 @@
 <body>
     <header>
         <h1>Painel de Administração</h1>
-        <button onclick="window.location.href='/Dev-Web-main/index.html'">Sair</button>
+        <button onclick="window.location.href='index.html'">Sair</button>
     </header>
     <main>
-        <section id="roupas-container">
+        <section id="roupas-container" class="roupas-container">
             <h2>Lista de Roupas</h2>
             <div id="roupas-lista">
                 <!-- Cada roupa será adicionada dinamicamente aqui como um contêiner separado -->
@@ -34,7 +34,7 @@
             </div>
 
             <!-- Seção para atualizar imagem da roupa -->
-            <div class="form-section">
+            <div class="form-section atualizarRoupa">
                 <h3>Atualizar Imagem da Roupa</h3>
                 <input type="number" id="idRoupa" placeholder="ID da Roupa">
                 <input type="text" id="novoNome" placeholder="Novo Nome">
@@ -45,8 +45,8 @@
             <!-- Seção para deletar roupa -->
             <div class="form-section">
                 <h3>Deletar Roupa</h3>
-                <input type="text" id="idRoupaDeletar" placeholder="ID da Roupa">
-                <button onclick="deletarRoupa()">Deletar Roupa</button>
+                <input type="number" id="idRoupaDeletar" placeholder="ID da Roupa">
+                <button id="btnDelete" onclick="deletarRoupa()">Deletar Roupa</button>
             </div>
         </section>
     </main>

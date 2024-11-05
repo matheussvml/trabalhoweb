@@ -3,7 +3,7 @@ const token = localStorage.getItem('token'); // Recupera o token do armazenament
 const inputUpdateId = document.querySelector("#idRoupa")
 const inputUpdateNome = document.querySelector("#novoNome")
 const inputUpateImg = document.querySelector("#novaImagem")
-
+const deletarBtn = document.querySelector("#btnDelete")
 async function carregarRoupas() {
     try {
         const response = await fetch('https://0ba092f0-4048-41f3-a3ac-4fb804d6e15d-00-2sb31d6mw6zvi.worf.replit.dev/api/roupas');
@@ -28,18 +28,30 @@ async function carregarRoupas() {
             roupaImg.style.width = "100px"
             roupaImg.style.height = "auto"
 
+            
             const deletarBtn = document.createElement("button")
             deletarBtn.textContent = "Deletar"
-            deletarBtn.onclick = "deletarRoupa"
+            
+            deletarBtn.addEventListener("click", ()=>{
+                deletarRoupa(roupa.id)
+            })
 
             const editarRoupa = document.createElement("button")
             editarRoupa.textContent = "Atualizar"
 
-            // editarRoupa.addEventListener("click", ()=>{
-            //     inputUpdateId.value = roupaItem.id
-            //     inputUpdateNome.value = roupaItem.nome
-            //     inputUpateImg.value = roupaItem.imagem
-            // })
+
+            editarRoupa.addEventListener("click", ()=>{
+                
+                const destino = document.querySelector(".form-section.atualizarRoupa");
+    
+                // Rolando suavemente até essa seção
+                if (destino) {
+                    destino.scrollIntoView({ behavior: "smooth" })
+                
+                inputUpdateId.value = roupa.id
+                inputUpdateNome.value = roupa.nome
+                inputUpateImg.value = roupa.imagem
+            }})
 
 
             //Usar de referencia:
@@ -125,11 +137,6 @@ async function atualizarRoupa() {
     const token = localStorage.getItem('token'); // Recupera o token do armazenamento local
 
     try {
-        // idInput.addEventListener("input",()=>{
-        //     if(idInput == roupa.id){
-
-        //     }
-        // })
 
         const response = await fetch(`https://0ba092f0-4048-41f3-a3ac-4fb804d6e15d-00-2sb31d6mw6zvi.worf.replit.dev/api/roupas/${id}`, {
             method: 'PATCH',
@@ -141,6 +148,10 @@ async function atualizarRoupa() {
         });
 
         if (response.ok) {
+            const destino = document.querySelector(".roupas-container");
+            if (destino) {
+                destino.scrollIntoView({ behavior: "smooth" })
+            }
             carregarRoupas(); // Recarrega a lista de roupas após atualizar
             document.getElementById('idRoupa').value = '';
             document.getElementById('novoNome').value = '';
@@ -175,7 +186,10 @@ async function deletarRoupa(id) {
         console.error('Erro ao deletar roupa:', error);
     }
 }
-
-
+const deleteIdInput = document.querySelector("#idRoupaDeletar")
+deletarBtn.addEventListener("click", ()=>{
+    deletarRoupa(deleteIdInput.value)
+    deleteIdInput.value = ""
+})
 // Chame a função para carregar as roupas na inicialização
 carregarRoupas();
