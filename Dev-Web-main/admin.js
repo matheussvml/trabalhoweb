@@ -1,5 +1,8 @@
 // admin.js
 const token = localStorage.getItem('token'); // Recupera o token do armazenamento local
+const inputUpdateId = document.querySelector("#idRoupa")
+const inputUpdateNome = document.querySelector("#novoNome")
+const inputUpateImg = document.querySelector("#novaImagem")
 
 async function carregarRoupas() {
     try {
@@ -11,14 +14,50 @@ async function carregarRoupas() {
 
         // Cria elementos para cada roupa
         roupas.forEach(roupa => {
-            const roupaItem = document.createElement('div');
-            roupaItem.innerHTML = `
-                <p><strong>${roupa.nome}</strong> - R$ ${roupa.preco}</p>
-                <img src="${roupa.imagem}" alt="${roupa.nome}" style="width: 100px; height: auto;">
-                <button onclick="deletarRoupa('${roupa.id}')">Deletar</button>
-                <button onclick="prepararAtualizacao('${roupa.id}', '${roupa.nome}', ${roupa.preco}, '${roupa.imagem}')">Atualizar</button>
-            `;
-            roupasLista.appendChild(roupaItem);
+            const roupaItem = document.createElement('div');    
+            roupaItem.id = "roupaItem"
+
+            const idRoupa = document.createElement("p")
+            idRoupa.textContent = `Id: ${roupa.id}`
+
+            const roupaNome = document.createElement("p")
+            roupaNome.textContent = `${roupa.nome} - R$ ${roupa.preco}`
+            
+            const roupaImg = document.createElement("img")
+            roupaImg.src = roupa.imagem
+            roupaImg.style.width = "100px"
+            roupaImg.style.height = "auto"
+
+            const deletarBtn = document.createElement("button")
+            deletarBtn.textContent = "Deletar"
+            deletarBtn.onclick = "deletarRoupa"
+
+            const editarRoupa = document.createElement("button")
+            editarRoupa.textContent = "Atualizar"
+
+            // editarRoupa.addEventListener("click", ()=>{
+            //     inputUpdateId.value = roupaItem.id
+            //     inputUpdateNome.value = roupaItem.nome
+            //     inputUpateImg.value = roupaItem.imagem
+            // })
+
+
+            //Usar de referencia:
+            // editar.addEventListener("click",()=>{ 
+            //     contatosLista.forEach((pessoaDaVez)=>{
+            //         if(pessoaContato.id === pessoaDaVez.id){
+            //             const posicao = contatosLista.indexOf(pessoaDaVez)
+            //             inputNome.value = pessoaDaVez.nome
+            //             inputNumero.value = pessoaDaVez.numero
+            //             inputEmail.value = pessoaDaVez.email
+            //             botaoEnviar.textContent = "Editar"
+            //             localStorage.setItem("idDoEditado", pessoaContato.id)
+            //         }
+            //     })
+
+            
+            roupaItem.append(idRoupa,roupaNome, roupaImg, deletarBtn, editarRoupa)
+            roupasLista.append(roupaItem);
         });
     } catch (error) {
         console.error('Erro ao carregar roupas:', error);
@@ -56,6 +95,7 @@ async function adicionarRoupa() {
                 'Authorization': `Bearer ${token}` // Adiciona o token de autenticação
             },
             body: JSON.stringify({ nome, preco: parseFloat(preco), imagem })
+            
         });
 
         if (responsePost.ok) {
@@ -85,6 +125,12 @@ async function atualizarRoupa() {
     const token = localStorage.getItem('token'); // Recupera o token do armazenamento local
 
     try {
+        // idInput.addEventListener("input",()=>{
+        //     if(idInput == roupa.id){
+
+        //     }
+        // })
+
         const response = await fetch(`https://0ba092f0-4048-41f3-a3ac-4fb804d6e15d-00-2sb31d6mw6zvi.worf.replit.dev/api/roupas/${id}`, {
             method: 'PATCH',
             headers: {
@@ -133,22 +179,3 @@ async function deletarRoupa(id) {
 
 // Chame a função para carregar as roupas na inicialização
 carregarRoupas();
-
-function exibirRoupas(dados) {
-    const container = document.getElementById('produtos-container-admin');
-    container.innerHTML = ''; // Limpa o container antes de adicionar novas roupas
-
-    dados.forEach(roupa => {
-        const produtoDiv = document.createElement('div');
-        produtoDiv.classList.add('produto');
-
-        produtoDiv.innerHTML = `
-            <img src="${roupa.imagem}" alt="${roupa.nome}" style="max-width: 120px;">
-            <h3>${roupa.nome}</h3>
-            <p>R$ ${roupa.preco.toFixed(2)}</p>
-            <button onclick="deletarRoupa(${roupa.id})">Deletar</button>
-        `;
-
-        container.appendChild(produtoDiv);
-    });
-}

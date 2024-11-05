@@ -10,8 +10,7 @@
 <body>
     <header>
         <h1>Painel de Administração</h1>
-        <button onclick="window.location.href='/index.html'">Sair</button>
-        
+        <button onclick="window.location.href='index.html'">Sair</button>
     </header>
     <main>
         <section id="roupas-container">
@@ -37,7 +36,7 @@
             <!-- Seção para atualizar imagem da roupa -->
             <div class="form-section">
                 <h3>Atualizar Imagem da Roupa</h3>
-                <input type="text" id="idRoupa" placeholder="ID da Roupa">
+                <input type="number" id="idRoupa" placeholder="ID da Roupa">
                 <input type="text" id="novoNome" placeholder="Novo Nome">
                 <input type="text" id="novaImagem" placeholder="Nova Imagem URL">
                 <button onclick="atualizarRoupa()">Atualizar Roupa</button>
