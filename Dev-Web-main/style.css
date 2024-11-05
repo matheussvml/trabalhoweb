@@ -274,7 +274,7 @@ button.next {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    background-color: #d5e8eb; /* Azul claro suave */
+    background-color: white; /* Azul claro suave */
     padding: 20px;
     border-radius: 20px;
 }
@@ -335,8 +335,8 @@ button.next {
 footer {
     text-align: center;
     padding: 20px;
-    background-color: #000;
-    color: #fff;
+    background-color: #f9f9f9;
+    color: black;
     margin-top: 20px;
 }
 
@@ -438,17 +438,18 @@ footer {
 
 /* Estilos para o botão "Adicionar ao carrinho" */
 .Adiciona {
-    background-color: #00796b; /* Cor de fundo do botão */
-    color: white; /* Cor do texto */
+    background-color: #80ed99; /* Cor de fundo do botão */
+    color: black; /* Cor do texto */
     border: none; /* Remove a borda padrão */
     border-radius: 5px; /* Borda arredondada */
     padding: 10px 15px; /* Espaçamento interno do botão */
     cursor: pointer; /* Muda o cursor para indicar que é clicável */
     transition: background-color 0.3s ease; /* Transição suave para a cor de fundo */
+    text-align: center;
 }
 
 .Adiciona:hover {
-    background-color: #005b4d; /* Cor do botão ao passar o mouse */
+    background-color: #57cc99; /* Cor do botão ao passar o mouse */
 }
 
 .cart {
