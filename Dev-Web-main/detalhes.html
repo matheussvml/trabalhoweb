@@ -1,44 +1,74 @@
-<!-- detalhes.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes da Roupa</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Detalhes do Produto</title>
+    <link rel="stylesheet" href="./detalhes.css">
 </head>
 <body>
-    <div id="detalhes-container"></div>
+    <header class="navbar">
+        <h1>Loja Modas Chu</h1>
+    </header>
+
+    <main>
+        <div class="product-detail-container">
+            <div class="product-image">
+                <img id="product-image" src="" alt="Produto">
+            </div>
+
+            <div class="product-info">
+                <h2 id="product-name">Nome do Produto</h2>
+                <p class="price" id="current-price">Preço: R$ 0,00</p>
+
+                <!-- Espaços adicionados para Descrição e Categoria -->
+                <p class="category" id="product-category">Categoria: </p>
+                <p class="description" id="product-description">Descrição: </p>
+
+                <div class="buttons">
+                    <button class="add-to-cart" onclick="adicionarAoCarrinho()">Adicionar ao Carrinho</button>
+                    <button class="size-chart" onclick="mostrarTabelaDeMedidas()">Tabela de Medidas</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2024 Loja Modas Chu. Todos os direitos reservados.</p>
+    </footer>
 
     <script>
         async function mostrarDetalhes() {
             const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get('id'); // Obtém o ID da URL
+            const id = urlParams.get('id');
 
             try {
-                const resposta = await fetch(`https://0ba092f0-4048-41f3-a3ac-4fb804d6e15d-00-2sb31d6mw6zvi.worf.replit.dev/api/roupas/${id}`);
+                const resposta = await fetch(`https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/roupas/${id}`);
                 const roupa = await resposta.json();
 
-                const container = document.getElementById('detalhes-container');
-                container.innerHTML = `
-                    <h1>${roupa.nome}</h1>
-                    <img src="${roupa.imagem}" alt="${roupa.nome}" style="max-width: 300px;">
-                    <p>Preço: R$ ${roupa.preco.toFixed(2)}</p>
-                    <p>ID: ${roupa.id}</p>
-                    <button onclick="adicionarAoCarrinho('${roupa.id}')">Adicionar ao Carrinho</button>
-                `;
+                document.getElementById('product-image').src = roupa.imagem;
+                document.getElementById('product-name').textContent = roupa.nome;
+                document.getElementById('current-price').textContent = `Preço: R$ ${roupa.preco.toFixed(2)}`;
+
+                // Preenchendo Descrição e Categoria com espaços em branco
+                document.getElementById('product-category').textContent = `Categoria: ${roupa.categoria}`;
+                document.getElementById('product-description').textContent = `Descrição: ${roupa.desc}`;
+
             } catch (error) {
-                console.error('Erro ao carregar detalhes da roupa:', error);
-                document.write(`ERRO NA API: ${error.message}`);
+                console.error('Erro ao carregar os detalhes do produto:', error);
+                document.write(`Erro na API: ${error.message}`);
             }
         }
 
-        function adicionarAoCarrinho(id) {
-            // Implementação da função para adicionar a roupa ao carrinho
-            alert(`Roupa ${id} adicionada ao carrinho!`);
+        function adicionarAoCarrinho() {
+            alert('Produto adicionado ao carrinho!');
         }
 
-        mostrarDetalhes(); // Chama a função para mostrar detalhes na inicialização
+        function mostrarTabelaDeMedidas() {
+            alert('Mostrando tabela de medidas');
+        }
+
+        mostrarDetalhes();
     </script>
 </body>
 </html>

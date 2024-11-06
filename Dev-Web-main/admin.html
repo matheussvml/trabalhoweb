@@ -10,6 +10,7 @@
 <body>
     <header>
         <h1>Painel de Administração</h1>
+        <h2><a href="index.html">Voltar para a aba pricipal</a></h2>
         <button onclick="window.location.href='index.html'">Sair</button>
     </header>
     <main>
@@ -24,12 +25,23 @@
                 <h2>Adicionar Nova Roupa</h2>
                 <form id="formulario-adicionar-roupa" onsubmit="adicionarRoupa(); return false;">
                     <label for="nomeRoupa">Nome:</label>
-                    <input type="text" id="nomeRoupa" required>
-                    <label for="precoRoupa">Preço:</label>
-                    <input type="number" id="precoRoupa" required>
+                    <input type="text" id="nomeRoupa" required placeholder="Digite o nome da roupa">
+                    <label for="precoRoupa" >Preço:</label>
+                    <input type="number" id="precoRoupa" required placeholder ="Digite o preço">
+                    <label for="imagemRoupa">Categoria da roupa:</label>
+                    <select id="categoriaRoupa">
+                        <option value="feminino">Feminino</option>
+                        <option value="masculino">Masculino</option>
+                      </select>
+                      <br>
+                      <br>
                     <label for="imagemRoupa">URL da Imagem:</label>
-                    <input type="text" id="imagemRoupa" required>
+                    <input type="text" id="imagemRoupa" required placeholder ="Digite a URL da imagem">
+                    <label for="descRoupa">Descrição:</label>
+                    <textarea id="descRoupa" required placeholder="Digite a descrição da roupa"></textarea>
+
                     <button type="submit">Adicionar Roupa</button>
+
                 </form>
             </div>
 
@@ -39,6 +51,16 @@
                 <input type="number" id="idRoupa" placeholder="ID da Roupa">
                 <input type="text" id="novoNome" placeholder="Novo Nome">
                 <input type="text" id="novaImagem" placeholder="Nova Imagem URL">
+                <input type="text" id="novoPreco" placeholder="Novo Preço">
+                <textarea id="novadesc" placeholder="Nova descrição"></textarea>
+                <select id="novaCategoria">
+                    <option value="feminino">Feminino</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="infantil">Infantil</option>
+                    <option value="esportivo">Esportivo</option>
+                  </select>
+                    <br>
+                    <br>
                 <button onclick="atualizarRoupa()">Atualizar Roupa</button>
             </div>
 

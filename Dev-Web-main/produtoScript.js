@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
     const Id = urlParams.get('id');
 
-    fetch(`https://0ba092f0-4048-41f3-a3ac-4fb804d6e15d-00-2sb31d6mw6zvi.worf.replit.dev/api/roupas${Id}`) // Ajuste a URL conforme necessário
+    fetch(`https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/roupas${Id}`) // Ajuste a URL conforme necessário
         .then(response => {
             if (!response.ok) {
                 throw new Error('Roupa não encontrada');

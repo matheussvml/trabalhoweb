@@ -3,10 +3,13 @@ const token = localStorage.getItem('token'); // Recupera o token do armazenament
 const inputUpdateId = document.querySelector("#idRoupa")
 const inputUpdateNome = document.querySelector("#novoNome")
 const inputUpateImg = document.querySelector("#novaImagem")
+
+const inputCategoria = document.querySelector("#novaCategoria")
+const inputdesc = document.querySelector("#novadesc")
 const deletarBtn = document.querySelector("#btnDelete")
 async function carregarRoupas() {
     try {
-        const response = await fetch('https://0ba092f0-4048-41f3-a3ac-4fb804d6e15d-00-2sb31d6mw6zvi.worf.replit.dev/api/roupas');
+        const response = await fetch('https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/roupas');
         const roupas = await response.json();
         
         const roupasLista = document.getElementById('roupas-lista');
@@ -28,9 +31,14 @@ async function carregarRoupas() {
             roupaImg.style.width = "100px"
             roupaImg.style.height = "auto"
 
+            const roupaCategoria = document.createElement("p")
+            roupaCategoria.textContent = `${roupa.categoria}`
             
             const deletarBtn = document.createElement("button")
             deletarBtn.textContent = "Deletar"
+
+            const descRoupa = document.createElement("p")
+            descRoupa.textContent = `Descrição: ${roupa.desc}`
             
             deletarBtn.addEventListener("click", ()=>{
                 deletarRoupa(roupa.id)
@@ -51,24 +59,13 @@ async function carregarRoupas() {
                 inputUpdateId.value = roupa.id
                 inputUpdateNome.value = roupa.nome
                 inputUpateImg.value = roupa.imagem
+                inputCategoria.value = roupa.categoria
+                inputdesc.value = roupa.desc
+                
             }})
 
-
-            //Usar de referencia:
-            // editar.addEventListener("click",()=>{ 
-            //     contatosLista.forEach((pessoaDaVez)=>{
-            //         if(pessoaContato.id === pessoaDaVez.id){
-            //             const posicao = contatosLista.indexOf(pessoaDaVez)
-            //             inputNome.value = pessoaDaVez.nome
-            //             inputNumero.value = pessoaDaVez.numero
-            //             inputEmail.value = pessoaDaVez.email
-            //             botaoEnviar.textContent = "Editar"
-            //             localStorage.setItem("idDoEditado", pessoaContato.id)
-            //         }
-            //     })
-
             
-            roupaItem.append(idRoupa,roupaNome, roupaImg, deletarBtn, editarRoupa)
+            roupaItem.append(idRoupa,roupaNome, roupaImg, deletarBtn, editarRoupa, roupaCategoria, descRoupa)
             roupasLista.append(roupaItem);
         });
     } catch (error) {
@@ -85,12 +82,14 @@ async function adicionarRoupa() {
     const nome = document.getElementById('nomeRoupa').value;
     const preco = document.getElementById('precoRoupa').value;
     const imagem = document.getElementById('imagemRoupa').value;
+    const categoria = document.getElementById('categoriaRoupa').value
+    const desc = document.getElementById('descRoupa')
 
     const token = localStorage.getItem('token'); // Recupera o token do armazenamento local
 
     try {
         // Primeiro, carregue as roupas atuais para verificar duplicações
-        const response = await fetch('https://0ba092f0-4048-41f3-a3ac-4fb804d6e15d-00-2sb31d6mw6zvi.worf.replit.dev/api/roupas');
+        const response = await fetch('https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/roupas');
         const roupas = await response.json();
 
         // Verifique se a roupa já existe
@@ -100,13 +99,13 @@ async function adicionarRoupa() {
             return; // Não adicione se já existir
         }
 
-        const responsePost = await fetch('https://0ba092f0-4048-41f3-a3ac-4fb804d6e15d-00-2sb31d6mw6zvi.worf.replit.dev/api/roupas', {
+        const responsePost = await fetch('https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/roupas', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}` // Adiciona o token de autenticação
             },
-            body: JSON.stringify({ nome, preco: parseFloat(preco), imagem })
+            body: JSON.stringify({ nome, preco: parseFloat(preco), imagem, categoria, desc })
             
         });
 
@@ -115,6 +114,8 @@ async function adicionarRoupa() {
             document.getElementById('nomeRoupa').value = '';
             document.getElementById('precoRoupa').value = '';
             document.getElementById('imagemRoupa').value = '';
+            document.getElementById('categoriaRoupa').value = '';
+            document.getElementById('descRoupa').value = '';
             carregarRoupas(); // Recarrega a lista de roupas após adicionar
         } else {
             console.error('Erro ao adicionar roupa:', responsePost.statusText);
@@ -132,19 +133,22 @@ async function atualizarRoupa() {
     const id = document.getElementById('idRoupa').value;
     const novoNome = document.getElementById('novoNome').value;
     const novaImagem = document.getElementById('novaImagem').value;
-    const novoPreco = document.getElementById('precoRoupa').value;
+    const novoPreco = document.getElementById('novoPreco').value;
+    const novaCategoria = document.getElementById('novaCategoria').value
+    const novadesc = document.getElementById('novadesc').value
+
 
     const token = localStorage.getItem('token'); // Recupera o token do armazenamento local
 
     try {
 
-        const response = await fetch(`https://0ba092f0-4048-41f3-a3ac-4fb804d6e15d-00-2sb31d6mw6zvi.worf.replit.dev/api/roupas/${id}`, {
+        const response = await fetch(`https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/roupas/${id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}` // Adiciona o token de autenticação
             },
-            body: JSON.stringify({ nome: novoNome, imagem: novaImagem, preco: parseFloat(novoPreco) })
+            body: JSON.stringify({ nome: novoNome, imagem: novaImagem, preco: parseFloat(novoPreco), categoria: novaCategoria, desc: novadesc })
         });
 
         if (response.ok) {
@@ -156,7 +160,9 @@ async function atualizarRoupa() {
             document.getElementById('idRoupa').value = '';
             document.getElementById('novoNome').value = '';
             document.getElementById('novaImagem').value = '';
-            document.getElementById('precoRoupa').value = '';
+            document.getElementById('novoPreco').value = '';
+            document.getElementById('novaCategoria').value = '';
+            document.getElementById('novadesc').value = '';
         } else {
             console.error('Erro ao atualizar roupa:', response.statusText);
         }
@@ -170,7 +176,7 @@ async function deletarRoupa(id) {
     const token = localStorage.getItem('token'); // Recupera o token do armazenamento local
 
     try {
-        const response = await fetch(`https://0ba092f0-4048-41f3-a3ac-4fb804d6e15d-00-2sb31d6mw6zvi.worf.replit.dev/api/roupas/${id}`, {
+        const response = await fetch(`https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/roupas/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}` // Adiciona o token de autenticação

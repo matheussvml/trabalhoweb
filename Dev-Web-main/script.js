@@ -22,6 +22,34 @@ function moveSlide(direction) {
 // Inicializa o carrossel exibindo o primeiro slide
 showSlide(currentSlide);
 
+window.onload = function() {
+    // Verifica se o token está presente no armazenamento local
+    const token = localStorage.getItem("token");
+
+    if (token) {
+        // Envia o token para o backend para verificar se o usuário é um administrador
+        fetch('https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/verificar-admin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.isAdmin) {
+                // Exibe o link de administração se o usuário for admin
+                document.getElementById("adminLink").style.display = "block";
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao verificar admin:', error);
+        });
+    }
+};
+
+
+
 
 function entrarComoAdmin() {
     document.getElementById('produtos').style.display = 'none'; // Oculta a seção de produtos
@@ -31,7 +59,7 @@ function entrarComoAdmin() {
 
 async function mostrarRoupas() {
     try {
-        const resposta = await fetch("https://0ba092f0-4048-41f3-a3ac-4fb804d6e15d-00-2sb31d6mw6zvi.worf.replit.dev/api/roupas");
+        const resposta = await fetch("https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/roupas");
         const dados = await resposta.json();
 
         const container = document.getElementById('produtos-container');
@@ -73,9 +101,10 @@ async function mostrarRoupas() {
 
 mostrarRoupas();
 
+
 // Função para buscar e exibir todas as roupas na seção de admin
 function buscarRoupasAdmin() {
-    fetch('https://0ba092f0-4048-41f3-a3ac-4fb804d6e15d-00-2sb31d6mw6zvi.worf.replit.dev/api/roupas')
+    fetch('https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/roupas')
         .then(response => response.json())
         .then(data => {
             const produtosContainer = document.getElementById('produtos-container-admin');
@@ -124,7 +153,7 @@ function adicionarRoupa() {
 
     const token = localStorage.getItem('token'); // Obtém o token do localStorage
 
-    fetch('https://0ba092f0-4048-41f3-a3ac-4fb804d6e15d-00-2sb31d6mw6zvi.worf.replit.dev/api/roupas', {
+    fetch('https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/roupas', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -152,7 +181,7 @@ function adicionarRoupa() {
 
 function deletarRoupa(id) {
     const token = localStorage.getItem('token'); // Obtém o token do localStorage
-    fetch(`https://0ba092f0-4048-41f3-a3ac-4fb804d6e15d-00-2sb31d6mw6zvi.worf.replit.dev/api/roupas/${id}`, {
+    fetch(`https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/roupas/${id}`, {
         method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${token}` // Adiciona o token ao cabeçalho da requisição
@@ -177,7 +206,7 @@ async function fazerLogin() {
     const username = document.getElementById('username').value; // Obtém o valor do campo de username
     const password = document.getElementById('password').value; // Obtém o valor do campo de password
 
-    const resposta = await fetch('https://0ba092f0-4048-41f3-a3ac-4fb804d6e15d-00-2sb31d6mw6zvi.worf.replit.dev/api/login', {
+    const resposta = await fetch('https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -202,7 +231,7 @@ async function loginAdmin() {
     const password = document.getElementById('password').value;
 
     try {
-        const response = await fetch('https://0ba092f0-4048-41f3-a3ac-4fb804d6e15d-00-2sb31d6mw6zvi.worf.replit.dev/api/login', {
+        const response = await fetch('https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -249,7 +278,7 @@ function atualizarRoupa() {
     const token = localStorage.getItem('token');
 
     // Envia a requisição PATCH
-    fetch(`https://0ba092f0-4048-41f3-a3ac-4fb804d6e15d-00-2sb31d6mw6zvi.worf.replit.dev/api/roupas/${idRoupa}`, {
+    fetch(`https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/roupas/${idRoupa}`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
@@ -265,7 +294,7 @@ function atualizarRoupa() {
     })
     .then(data => {
         alert('Roupa atualizada com sucesso!');
-        buscarRoupasAdmin(); // Atualiza a lista de roupas
+        buscarRoupasAdmin(); // Atualiza a lista de roupas oooooooi
     })
     .catch(error => {
         console.error('Erro:', error);
