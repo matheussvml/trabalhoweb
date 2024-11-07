@@ -27,6 +27,9 @@ window.onload = function() {
     const token = localStorage.getItem("token");
 
     if (token) {
+        document.getElementById("entrar").style.display = "none";
+        document.getElementById("logoutButton").style.display = "block";
+
         // Envia o token para o backend para verificar se o usuário é um administrador
         fetch('https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/verificar-admin', {
             method: 'POST',
@@ -45,8 +48,17 @@ window.onload = function() {
         .catch(error => {
             console.error('Erro ao verificar admin:', error);
         });
+    }   else {
+        // Se não houver token, exibe o botão de Login e oculta o de Logout
+        document.getElementsByClassName("account").style.display = "block";
+        document.getElementById("logoutButton").style.display = "none";
     }
 };
+
+function logout() {
+    localStorage.removeItem("token");
+    window.location.href = "index.html"; // Redireciona para a página de login
+}
 
 
 
