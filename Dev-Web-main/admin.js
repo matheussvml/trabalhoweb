@@ -9,7 +9,7 @@ const inputdesc = document.querySelector("#novadesc")
 const deletarBtn = document.querySelector("#btnDelete")
 async function carregarRoupas() {
     try {
-        const response = await fetch('https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/roupas');
+        const response = await fetch('http://localhost:3000/api/roupas');
         const roupas = await response.json();
         
         const roupasLista = document.getElementById('roupas-lista');
@@ -83,13 +83,13 @@ async function adicionarRoupa() {
     const preco = document.getElementById('precoRoupa').value;
     const imagem = document.getElementById('imagemRoupa').value;
     const categoria = document.getElementById('categoriaRoupa').value
-    const desc = document.getElementById('descRoupa')
+    const descr = document.getElementById('descRoupa').value
 
     const token = localStorage.getItem('token'); // Recupera o token do armazenamento local
 
     try {
         // Primeiro, carregue as roupas atuais para verificar duplicações
-        const response = await fetch('https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/roupas');
+        const response = await fetch('http://localhost:3000/api/roupas');
         const roupas = await response.json();
 
         // Verifique se a roupa já existe
@@ -99,15 +99,21 @@ async function adicionarRoupa() {
             return; // Não adicione se já existir
         }
 
-        const responsePost = await fetch('https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/roupas', {
+        const responsePost = await fetch('http://localhost:3000/api/roupas', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // Adiciona o token de autenticação
+                'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ nome, preco: parseFloat(preco), imagem, categoria, desc })
-            
+            body: JSON.stringify({
+                nome,
+                preco: parseFloat(preco), // Converte para número
+                imagem,
+                categoria,
+                descr: descr // Certifique-se de enviar 'descr' corretamente
+            })
         });
+        
 
         if (responsePost.ok) {
             // Aqui, não é necessário chamar carregarRoupas novamente, pois você está apenas adicionando a nova roupa
@@ -142,7 +148,7 @@ async function atualizarRoupa() {
 
     try {
 
-        const response = await fetch(`https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/roupas/${id}`, {
+        const response = await fetch(`http://localhost:3000/api/roupas/${id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -176,7 +182,7 @@ async function deletarRoupa(id) {
     const token = localStorage.getItem('token'); // Recupera o token do armazenamento local
 
     try {
-        const response = await fetch(`https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/roupas/${id}`, {
+        const response = await fetch(`http://localhost:3000/api/roupas/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}` // Adiciona o token de autenticação

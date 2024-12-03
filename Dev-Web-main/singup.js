@@ -11,7 +11,7 @@ loginForm.addEventListener("submit", async (e) => {
         return;
     }
 
-    const response = await fetch('https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/auth/register', {
+    const response = await fetch('http://localhost:3000/api/usuarios/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

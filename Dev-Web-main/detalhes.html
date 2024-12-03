@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Produto</title>
-    <link rel="stylesheet" href="./detalhes.css">
+    <link rel="stylesheet" href="detalhes.css">
+    <link rel="stylesheet" href="reset.css">
 </head>
 <body>
     <header class="navbar">
@@ -20,17 +21,17 @@
             <div class="product-info">
                 <h2 id="product-name">Nome do Produto</h2>
                 <p class="price" id="current-price">Preço: R$ 0,00</p>
-
-                <!-- Espaços adicionados para Descrição e Categoria -->
-                <p class="category" id="product-category">Categoria: </p>
-                <p class="description" id="product-description">Descrição: </p>
-
+                <p class="category" id="product-category">Categoria:</p>
+                <p class="description" id="product-description">Descrição:</p>
                 <div class="buttons">
-                    <button class="add-to-cart" onclick="adicionarAoCarrinho()">Adicionar ao Carrinho</button>
+                    <button class="add-to-cart" onclick="adicionarAoCarrinhoDetalhes()">Adicionar ao Carrinho</button>
                     <button class="size-chart" onclick="mostrarTabelaDeMedidas()">Tabela de Medidas</button>
-                </div>
+                </div>                
             </div>
         </div>
+
+        <!-- Produtos Similares -->
+        <div class="produtos-container" id="produtos-container"></div>
     </main>
 
     <footer>
@@ -38,25 +39,78 @@
     </footer>
 
     <script>
-        async function mostrarDetalhes() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get('id');
+async function mostrarDetalhes() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
 
+    if (!id) {
+        alert('Produto não encontrado. Verifique a URL.');
+        return;
+    }
+
+    try {
+        const resposta = await fetch(`http://localhost:3000/api/roupas/${id}`);
+        if (!resposta.ok) {
+            throw new Error(`Erro ao carregar detalhes: ${resposta.status}`);
+        }
+
+        const roupa = await resposta.json();
+
+        if (!roupa) {
+            throw new Error('Produto não encontrado.');
+        }
+
+        // Garante que preco seja um número ou define 'N/A' como padrão
+        const precoFormatado = roupa.preco ? parseFloat(roupa.preco).toFixed(2) : 'N/A';
+
+        // Atualiza os elementos do DOM
+        document.getElementById('product-image').src = roupa.imagem || 'placeholder.jpg';
+        document.getElementById('product-name').textContent = roupa.nome || 'Nome não disponível';
+        document.getElementById('current-price').textContent = `Preço: R$ ${precoFormatado}`;
+        document.getElementById('product-category').textContent = `Categoria: ${roupa.categoria || 'Não especificada'}`;
+        document.getElementById('product-description').textContent = `Descrição: ${roupa.desc || 'Sem descrição'}`;
+    } catch (error) {
+        console.error('Erro ao carregar os detalhes do produto:', error);
+        alert('Erro ao carregar os detalhes do produto. Tente novamente mais tarde.');
+    }
+}
+
+
+        async function mostrarRoupas() {
             try {
-                const resposta = await fetch(`https://a9d8b915-4ebe-4d56-bcea-90efb67c3b9b-00-35la7r7wzyor6.kirk.replit.dev/api/roupas/${id}`);
-                const roupa = await resposta.json();
+                const resposta = await fetch('http://localhost:3000/api/roupas');
+                if (!resposta.ok) {
+                    throw new Error(`Erro na API: ${resposta.status}`);
+                }
 
-                document.getElementById('product-image').src = roupa.imagem;
-                document.getElementById('product-name').textContent = roupa.nome;
-                document.getElementById('current-price').textContent = `Preço: R$ ${roupa.preco.toFixed(2)}`;
+                const dados = await resposta.json();
 
-                // Preenchendo Descrição e Categoria com espaços em branco
-                document.getElementById('product-category').textContent = `Categoria: ${roupa.categoria}`;
-                document.getElementById('product-description').textContent = `Descrição: ${roupa.desc}`;
+                const container = document.getElementById('produtos-container');
+                if (!container) {
+                    throw new Error('Elemento "produtos-container" não encontrado.');
+                }
 
+                container.innerHTML = ''; // Limpa o container antes de adicionar novos produtos
+
+                dados.forEach(roupa => {
+                    if (!roupa) return;
+
+                    const produtoDiv = document.createElement('div');
+                    produtoDiv.classList.add('produto');
+
+                    produtoDiv.innerHTML = `
+                        <a href="/detalhes.html?id=${roupa.id}">
+                            <img src="${roupa.imagem}" alt="${roupa.nome}" style="max-width: 120px;">
+                            <h3>${roupa.nome}</h3>
+                            <p>R$ ${roupa.preco.toFixed(2)}</p>
+                        </a>
+                    `;
+
+                    container.appendChild(produtoDiv);
+                });
             } catch (error) {
-                console.error('Erro ao carregar os detalhes do produto:', error);
-                document.write(`Erro na API: ${error.message}`);
+                console.error('Erro ao carregar produtos similares:', error);
+                alert('Erro ao carregar produtos similares. Tente novamente mais tarde.');
             }
         }
 
@@ -67,8 +121,10 @@
         function mostrarTabelaDeMedidas() {
             alert('Mostrando tabela de medidas');
         }
-
-        mostrarDetalhes();
+        // Garante que os scripts sejam executados após o DOM ser carregado
+        document.addEventListener('DOMContentLoaded', () => {
+            mostrarDetalhes();
+        });
     </script>
 </body>
 </html>
