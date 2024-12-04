@@ -10,6 +10,8 @@ body {
     color: #333;
 }
 
+
+
 header {
     display: flex;
     justify-content: space-between;
@@ -436,15 +438,15 @@ footer {
     transform: scale(1.05);
 }
 
-/* Estilos para o botão "Adicionar ao carrinho" */
+
 .Adiciona {
-    background-color: #80ed99; /* Cor de fundo do botão */
-    color: black; /* Cor do texto */
-    border: none; /* Remove a borda padrão */
-    border-radius: 5px; /* Borda arredondada */
-    padding: 10px 15px; /* Espaçamento interno do botão */
-    cursor: pointer; /* Muda o cursor para indicar que é clicável */
-    transition: background-color 0.3s ease; /* Transição suave para a cor de fundo */
+    background-color: #80ed99; 
+    color: black; 
+    border: none; 
+    border-radius: 5px; 
+    padding: 10px 15px;
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
     text-align: center;
 }
 
@@ -492,26 +494,133 @@ footer {
     width: 65%; /* Ajuste a largura conforme necessário */
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Estilo para o carrinho */
-.carrinho-container {
-    margin-top: 2rem;
-    background: #fff;
+#carrinho {
+    width: 90%;
+    margin: 2rem auto;
+    background: #f5f5f5; /* Cinza claro */
     padding: 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-family: 'Arial', sans-serif;
 }
 
-.carrinho-container h3 {
-    margin-bottom: 1rem;
-    color: #333;
+#carrinho h3 {
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
     text-align: center;
     font-size: 1.8rem;
+    font-weight: 600;
+}
+
+/* Botões de Diminuir */
+.botaoDiminuir {
+    background-color: transparent;
+    border: 1px solid #9b2323;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 4px;
+    color: #000;
+    transition: all 0.3s ease;
+}
+
+.botaoDiminuir:hover {
+    background-color: #9b2323; /* Fundo vermelho no hover */
+    color: #fff; /* Texto branco no hover */
+}
+
+/* Botões de Adicionar */
+.botaoAumentar {
+    background-color: transparent;
+    border: 1px solid #2e8b57;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 4px;
+    color: #000;
+    transition: all 0.3s ease;
+}
+
+.botaoAumentar:hover {
+    background-color: #2e8b57; /* Fundo verde no hover */
+    color: #fff; /* Texto branco no hover */
+}
+
+/* Botão Remover */
+button[onclick^="removerItem"] {
+    background-color: transparent;
+    border: 1px solid #9b2323;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 4px;
+    color: #000;
+    transition: all 0.3s ease;
+}
+
+button[onclick^="removerItem"]:hover {
+    background-color: #9b2323; /* Fundo verde no hover */
+    color: #fff; /* Texto branco no hover */
+}
+
+
+
+.carrinho-container {
+    margin-top: 1rem;
+    background: #fff;
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ddd;
 }
 
 .carrinho-total {
     text-align: right;
-    margin-top: 1rem;
-    font-size: 1.4rem;
+    margin-top: 1.5rem;
+    font-size: 1.6rem;
     color: #ff4f7a;
     font-weight: bold;
 }
@@ -519,33 +628,146 @@ footer {
 .carrinho-table {
     width: 100%;
     margin-top: 1rem;
-    text-align: left;
+    border-collapse: collapse;
+    font-size: 1rem;
 }
 
 .carrinho-table th,
 .carrinho-table td {
-    padding: 0.5rem;
-    vertical-align: middle;
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
 }
 
 .carrinho-table th {
-    background-color: #f7f7f7;
+    background-color: #f0f0f0;
+    font-weight: bold;
+    color: #333;
 }
 
 .carrinho-table td {
-    border-top: 1px solid #ddd;
+    color: #555;
 }
 
 .btn-remover {
     background-color: #ff4f7a;
     color: #fff;
     border: none;
-    padding: 0.5rem;
-    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn-remover:hover {
     background-color: #d43f61;
+    transform: scale(1.05);
 }
+
+button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border-radius: 8%;
+}
+
+button:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+}
+
+button#limpar-carrinho {
+    background-color: #e74c3c;
+    border-radius: 8%;
+}
+
+button#limpar-carrinho:hover {
+    background-color: #c0392b;
+
+}
+
+button#finalizar-compra {
+    background-color:#2ea2cc; /* Verde para destacar a ação positiva */
+    border-radius: 8%; /* Deixa consistente com os outros botões */
+}
+
+button#finalizar-compra:hover {
+    background-color: #2ea2cc; /* Verde escuro no hover */
+}
+
+
+#controle-pesquisa-filtro {
+    display: flex; /* Torna os itens flexíveis */
+    align-items: center; /* Alinha os itens verticalmente */
+    gap: 1rem; /* Espaçamento entre os itens */
+    margin: 1rem auto; /* Centraliza o contêiner */
+    width: 90%; /* Define a largura total */
+}
+
+/* Container flexível */
+#pesquisa-e-filtro {
+    display: flex; /* Alinha os itens horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    gap: 1rem; /* Espaço entre a barra de pesquisa e o botão */
+    padding: 1rem;
+}
+
+/* Estilo da barra de pesquisa */
+#barra-pesquisa {
+    flex: 1; /* Ocupa o espaço restante */
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+/* Estilo do botão dropdown */
+#filtro-categorias {
+    position: relative;
+}
+
+.btn-dropdown {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+/* Dropdown escondido inicialmente */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%; /* Alinha o dropdown abaixo do botão */
+    left: 0;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    min-width: 150px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* Links do dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Efeito ao passar o mouse nos links */
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Mostrar dropdown quando ativo */
+.dropdown-content.show {
+    display: block;
+}
+

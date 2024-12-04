@@ -109,12 +109,16 @@ async function mostrarRoupas() {
             throw new Error('Elemento produtos-container não encontrado!');
         }
 
+        
         container.innerHTML = ''; // Limpa o container antes de adicionar novos produtos
 
         // Adiciona as roupas ao DOM
         dados.forEach(roupa => {
             const produtoDiv = document.createElement('div');
             produtoDiv.classList.add('produto');
+            produtoDiv.dataset.id = roupa.id;
+
+            container.appendChild(produtoDiv);
 
             const produtoA = document.createElement("a");
             produtoA.href = `detalhes.html?id=${roupa.id}`;
@@ -131,18 +135,22 @@ async function mostrarRoupas() {
             const precoRoupa = document.createElement("p");
             precoRoupa.textContent = `R$ ${parseFloat(roupa.preco || 0).toFixed(2)}`;
 
+            const categoriaRoupa = document.createElement("p");
+            categoriaRoupa.textContent = `${roupa.categoria || "Categoria não disponível"}`.toLowerCase().trim();
+
             const botaoAddCar = document.createElement("button");
             botaoAddCar.classList.add("Adiciona");
             botaoAddCar.innerHTML = '<span class="material-symbols-outlined">shopping_cart</span> Adicionar ao carrinho';
             botaoAddCar.onclick = () => addCarrinho(roupa.id);
 
-            produtoA.append(imgRoupa, nomeRoupa, precoRoupa);
+            produtoA.append(imgRoupa, nomeRoupa, precoRoupa, categoriaRoupa);
             produtoDiv.append(produtoA, botaoAddCar);
             container.appendChild(produtoDiv);
         });
     } catch (error) {
-        console.error('Erro na API:', error);
-        document.write(`ERRO NA API: ${error.message}`);
+        console.error("Erro ao carregar roupas:", error);
+        console.error(' Erro na API:', error);
+        document.write(` ERRO NA API: ${error.message}`);
     }
 }
 
@@ -354,159 +362,225 @@ function atualizarRoupa() {
     });
 }
 
-
-// Chame a função para carregar as roupas na inicialização
-mostrarRoupas();
-
-
-// Carregar carrinho do localStorage
-function carregarCarrinho() {
-    const carrinhoSalvo = localStorage.getItem('carrinho');
-    return carrinhoSalvo ? JSON.parse(carrinhoSalvo) : [];
-}
-
-// Salvar carrinho no localStorage
-function salvarCarrinho() {
-    localStorage.setItem('carrinho', JSON.stringify(carrinho));
-}
-
 // Carrinho global
-let carrinho = carregarCarrinho();
+let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
 
-// Adicionar item ao carrinho
-function addCarrinho(id, nome, preco) {
-    const produtoExistente = carrinho.find((item) => item.id === id);
+// Função para salvar o carrinho no localStorage
+function salvarCarrinho() {
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
+}
 
-    if (produtoExistente) {
-        produtoExistente.quantidade += 1;
+// Função para exibir o carrinho na página
+function exibirCarrinho() {
+    const carrinhoContainer = document.getElementById("carrinho-container");
+    const totalElement = document.getElementById("total-geral");
+
+    carrinhoContainer.innerHTML = ""; // Limpa o conteúdo atual
+
+    let totalGeral = 0;
+
+    if (carrinho.length === 0) {
+        carrinhoContainer.innerHTML = "<p>O carrinho está vazio.</p>";
+        totalElement.textContent = "0.00";
+        return;
+    }
+
+    carrinho.forEach(item => {
+        const totalItem = item.preco * item.quantidade;
+        totalGeral += totalItem;
+
+        const itemDiv = document.createElement("div");
+        itemDiv.classList.add("carrinho-item");
+
+        itemDiv.innerHTML = `
+            <span>${item.nome}</span>
+            <span>R$ ${item.preco.toFixed(2)}</span>
+            <span>
+                <button class= "botaoDiminuir" onclick="alterarQuantidade(${item.id}, -1)">-</button>
+                ${item.quantidade}
+                <button class= "botaoAumentar" onclick="alterarQuantidade(${item.id}, 1)">+</button>
+            </span>
+            <span>R$ ${totalItem.toFixed(2)}</span>
+            <button class = "removerBotao" onclick="removerItem(${item.id})">Remover</button>
+        `;
+
+        carrinhoContainer.appendChild(itemDiv);
+    });
+
+    totalElement.textContent = totalGeral.toFixed(2);
+}
+
+// Função para adicionar um produto ao carrinho
+function addCarrinho(id) {
+    const produto = carrinho.find(item => item.id === id);
+
+    if (produto) {
+        produto.quantidade++;
     } else {
+        const nome = document.querySelector(`.produto[data-id="${id}"] h3`).textContent;
+        const preco = parseFloat(
+            document.querySelector(`.produto[data-id="${id}"] p`).textContent.replace("R$", "").trim()
+        );
+
         carrinho.push({ id, nome, preco, quantidade: 1 });
     }
-    salvarCarrinho(); // Salvar no localStorage
-    atualizarCarrinho();
-    alert('Produto adicionado ao carrinho!');
+
+    salvarCarrinho();
+    exibirCarrinho();
 }
 
-// Função para exibir o carrinho
-// function exibirCarrinho() {
-//     const carrinhoTable = document.querySelector("#carrinho-table tbody");
-//     const totalGeralElement = document.getElementById("total-geral");
+// Função para alterar a quantidade de um item no carrinho
+function alterarQuantidade(id, quantidade) {
+    const produto = carrinho.find(item => item.id === id);
+    if (!produto) return;
 
-//     if (!carrinhoTable || !totalGeralElement) {
-//         console.error("Tabela do carrinho ou elemento do total geral não encontrados.");
-//         return;
-//     }
+    produto.quantidade += quantidade;
 
-//     carrinhoTable.innerHTML = ""; // Limpa a tabela antes de atualizá-la
-//     let totalGeral = 0;
-
-//     if (carrinho.length === 0) {
-//         carrinhoTable.innerHTML = `
-//             <tr>
-//                 <td colspan="5" style="text-align: center;">Carrinho vazio.</td>
-//             </tr>`;
-//         totalGeralElement.textContent = "0.00";
-//         return;
-//     }
-
-//     carrinho.forEach((item) => {
-//         const total = item.preco * item.quantidade;
-//         totalGeral += total;
-
-//         const row = document.createElement("tr");
-//         row.innerHTML = `
-//             <td>${item.nome}</td>
-//             <td>R$ ${item.preco.toFixed(2)}</td>
-//             <td>
-//                 <input type="number" min="1" value="${item.quantidade}" onchange="alterarQuantidade(${item.id}, this.value)" />
-//             </td>
-//             <td>R$ ${total.toFixed(2)}</td>
-//             <td>
-//                 <button class="btn-remover" onclick="removerDoCarrinho(${item.id})">Remover</button>
-//             </td>
-//         `;
-//         carrinhoTable.appendChild(row);
-//     });
-
-//     totalGeralElement.textContent = totalGeral.toFixed(2);
-// }
-
-
-// Alterar quantidade no carrinho
-function alterarQuantidade(id, novaQuantidade) {
-    const produto = carrinho.find((item) => item.id === id);
-    if (produto) {
-        produto.quantidade = parseInt(novaQuantidade, 10) || 1;
+    if (produto.quantidade <= 0) {
+        removerItem(id);
+    } else {
         salvarCarrinho();
         exibirCarrinho();
     }
 }
 
-// Remover item do carrinho
-function removerDoCarrinho(id) {
-    carrinho = carrinho.filter((item) => item.id !== id);
+// Função para remover um item do carrinho
+function removerItem(id) {
+    carrinho = carrinho.filter(item => item.id !== id);
     salvarCarrinho();
     exibirCarrinho();
 }
 
-// Função para adicionar ao carrinho a partir da página de detalhes
-function adicionarAoCarrinhoDetalhes() {
-    const id = new URLSearchParams(window.location.search).get('id');
-    const nome = document.getElementById('product-name').textContent;
-    const preco = parseFloat(
-        document.getElementById('current-price').textContent.replace('Preço: R$ ', '').replace(',', '.')
-    );
+// Função para limpar o carrinho
+function limparCarrinho() {
+    carrinho = [];
+    salvarCarrinho();
+    exibirCarrinho();
+}
 
-    if (!id || !nome || isNaN(preco)) {
-        alert('Erro ao adicionar o produto ao carrinho. Verifique os detalhes.');
+// Função para finalizar a compra
+function finalizarCompra() {
+    if (carrinho.length === 0) {
+        alert("O carrinho está vazio!");
         return;
     }
 
-    addCarrinho(id, nome, preco);
+    alert("Compra finalizada com sucesso!");
+    limparCarrinho();
 }
 
-async function mostrarDetalhes() {
-    const urlParams = new URLSearchParams(window.location.search); // Obtém parâmetros da URL
-    const id = urlParams.get('id'); // Extrai o parâmetro 'id' da URL
+// Chamada inicial para exibir o carrinho ao carregar a página
+document.addEventListener("DOMContentLoaded", exibirCarrinho);
 
-    if (!id) {
-        alert('Produto não encontrado. Verifique a URL.');
-        return;
+// Integração do botão "Adicionar ao Carrinho" na exibição de produtos
+// async function mostrarRoupas() {
+//     try {
+//         const resposta = await fetch('http://localhost:3000/api/roupas');
+//         if (!resposta.ok) {
+//             throw new Error(`Erro ao buscar roupas: ${resposta.status}`);
+//         }
+
+//         const dados = await resposta.json();
+//         const container = document.getElementById('produtos-container');
+//         container.innerHTML = '';
+
+//         dados.forEach(roupa => {
+//             const produtoDiv = document.createElement('div');
+//             produtoDiv.classList.add('produto');
+//             produtoDiv.dataset.id = roupa.id;
+
+//             produtoDiv.innerHTML = `
+//                 <img src="${roupa.imagem || 'placeholder.jpg'}" alt="${roupa.nome || 'Imagem não disponível'}">
+//                 <h3>${roupa.nome || 'Nome não disponível'}</h3>
+//                 <p>R$ ${parseFloat(roupa.preco || 0).toFixed(2)}</p>
+//                 <button onclick="addCarrinho(${roupa.id})">Adicionar ao Carrinho</button>
+//             `;
+
+//             container.appendChild(produtoDiv);
+//         });
+//     } catch (error) {
+//         console.error("Erro ao carregar roupas:", error);
+//     }
+// }
+// Chame a função para carregar as roupas na inicialização
+mostrarRoupas();
+
+function filtrarRoupas() {
+    const termo = document.getElementById("barra-pesquisa").value.toLowerCase();
+    const produtos = document.querySelectorAll("#produtos-container .produto");
+    const secoes = document.querySelectorAll("main > section:not(#produtos)");
+    const carrossel = document.getElementById("carouselExample");
+
+    let encontrou = false;
+
+    produtos.forEach(produto => {
+        const nome = produto.querySelector("h3").textContent.toLowerCase();
+        if (nome.includes(termo)) {
+            produto.style.display = "block"; // Mostra o produto se corresponder ao termo
+            encontrou = true;
+        } else {
+            produto.style.display = "none"; // Esconde o produto caso contrário
+        }
+    });
+
+    if (termo && encontrou) {
+        secoes.forEach(secao => secao.style.display = "none"); // Oculta todas as outras seções
+        if (carrossel) carrossel.style.display = "none"; // Oculta o carrossel
+    } else {
+        secoes.forEach(secao => secao.style.display = "block"); // Mostra novamente todas as seções
+        if (carrossel) carrossel.style.display = "block"; // Mostra o carrossel
     }
+}
 
-    try {
-        // Faz a requisição para buscar os detalhes do produto com base no ID
-        const resposta = await fetch(`http://localhost:3000/api/roupas/${id}`);
+function toggleDropdown() {
+    const dropdown = document.getElementById("dropdown-menu");
+    dropdown.classList.toggle("show");
+}
 
-        if (!resposta.ok) {
-            throw new Error(`Erro ao carregar detalhes: ${resposta.status}`);
+function filtrarPorCategoria(event, categoria) {
+    event.preventDefault(); // Previne o comportamento padrão do link
+
+    const produtos = document.querySelectorAll("#produtos-container .produto");
+    let encontrou = false;
+
+    produtos.forEach(produto => {
+        // Obtém o texto da categoria do produto e remove espaços extras
+        const categoriaProduto = produto.querySelector("p").textContent.trim().toLowerCase();
+        console.log(`Categoria do Produto: ${categoriaProduto}, Categoria Selecionada: ${categoria.toLowerCase()}`);
+        
+        // Verifica se a categoria do produto corresponde à categoria selecionada
+        if (categoriaProduto === categoria.toLowerCase()) {
+            produto.style.display = "block"; // Mostra produtos da categoria correspondente
+            encontrou = true;
+        } else {
+            produto.style.display = "none"; // Esconde os outros produtos
         }
+    });
 
-        const roupa = await resposta.json(); // Converte a resposta para JSON
-
-        if (!roupa) {
-            throw new Error('Produto não encontrado.');
-        }
-
-        console.log("Resposta da API:", roupa);
-
-        // Atualiza os elementos do DOM com os detalhes do produto
-        document.getElementById('product-image').src = roupa.imagem || 'placeholder.jpg';
-        document.getElementById('product-name').textContent = roupa.nome || 'Nome não disponível';
-        document.getElementById('current-price').textContent = `Preço: R$ ${parseFloat(roupa.preco).toFixed(2)}`;
-        document.getElementById('product-category').textContent = `Categoria: ${roupa.categoria || 'Não especificada'}`;
-        document.getElementById('product-description').textContent = `Descrição: ${roupa.desc || 'Sem descrição'}`;
-    } catch (error) {
-        console.error('Erro ao carregar os detalhes do produto:', error);
-        alert('Erro ao carregar os detalhes do produto. Tente novamente mais tarde.');
+    if (!encontrou) {
+        console.log(`Nenhum produto encontrado para a categoria: ${categoria}`);
     }
 }
 
 
-// Exibir carrinho ao carregar a página principal
-document.addEventListener("DOMContentLoaded", () => {
-    mostrarRoupas();
-    // exibirCarrinho();
-    mostrarDetalhes();
-});
+function limparFiltro(event) {
+    event.preventDefault(); // Previne o redirecionamento padrão do link
+    const produtos = document.querySelectorAll("#produtos-container .produto");
+    produtos.forEach(produto => {
+        produto.style.display = "block"; // Mostra todos os produtos
+    });
+}
 
+
+// Fecha o dropdown ao clicar fora dele
+window.onclick = function (event) {
+    if (!event.target.matches('.btn-dropdown') && !event.target.closest('.dropdown-content')) {
+        const dropdowns = document.getElementsByClassName("dropdown-content");
+        for (let i = 0; i < dropdowns.length; i++) {
+            const openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+};

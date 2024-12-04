@@ -58,6 +58,24 @@
         </div>
       </div>
     </nav>
+
+    <section id="controle-pesquisa-filtro">
+      <input type="text" id="barra-pesquisa" placeholder="Pesquisar roupas..." oninput="filtrarRoupas()">
+      <div id="filtro-categorias" style="position: relative;">
+          <button class="btn-dropdown" onclick="toggleDropdown()">
+              <!-- Ícone SVG -->
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M440-160q-17 0-28.5-11.5T400-200v-240L168-736q-15-20-4.5-42t36.5-22h560q26 0 36.5 22t-4.5 42L560-440v240q0 17-11.5 28.5T520-160h-80Zm40-308 198-252H282l198 252Zm0 0Z"/></svg>
+          </button>
+          <div id="dropdown-menu" class="dropdown-content">
+            <a href="#" onclick="filtrarPorCategoria(event, 'feminino')">Feminino</a>
+            <a href="#" onclick="filtrarPorCategoria(event, 'masculino')">Masculino</a>
+            <a href="#" onclick="filtrarPorCategoria(event, 'calcados')">Calçados</a>
+            <a href="#" onclick="limparFiltro(event)">Todas as Categorias</a>            
+          </div>
+      </div>
+    </section>
+  
+    
     
     <!-- <nav> -->
             <!-- <li><a href="#novidades">Novidades</a></li>
@@ -96,30 +114,21 @@
             <span class="visually-hidden">Next</span>
           </button>
         </div>
-
+        
+        
+        <!-- Seção do Carrinho -->
         <section id="carrinho">
-          <div class="carrinho-container">
-            <h3>Carrinho de Compras</h3>
-            <table id="carrinho-table" class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Produto</th>
-                  <th>Preço</th>
-                  <th>Quantidade</th>
-                  <th>Total</th>
-                  <th>Remover</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Produtos do carrinho serão adicionados dinamicamente -->
-              </tbody>
-            </table>
-            <div class="carrinho-total">
-              <h4>Total Geral: R$ <span id="total-geral">0.00</span></h4>
-            </div>
+          <h3>Carrinho de Compras</h3>
+          <div id="carrinho-container">
+            <!-- Itens do carrinho serão adicionados aqui dinamicamente -->
           </div>
+          <div id="carrinho-total">
+            <p>Total: R$ <span id="total-geral">0.00</span></p>
+          </div>
+          <button id="finalizar-compra" onclick="finalizarCompra()">Finalizar Compra</button>
+          <button id="limpar-carrinho" onclick="limparCarrinho()">Limpar Carrinho</button>
         </section>
-      
+
 
         <section id="produtos">
             <!-- <div class="topicos-aa">
@@ -137,34 +146,7 @@
             </div>
         </section> 
 
-        <!-- Seção de Admin, inicialmente oculta -->
-        <section id="admin">
-          <div class="form-row">
-              <!-- Seção para adicionar nova roupa -->
-              <div class="form-section">
-                  <h3>Adicionar Nova Roupa</h3>
-                  <input type="text" id="nomeRoupa" placeholder="Nome da Roupa">
-                  <input type="number" id="precoRoupa" placeholder="Preço da Roupa">
-                  <input type="text" id="imagemRoupa" placeholder="URL da Imagem">
-                  <button onclick="adicionarRoupa()">Adicionar Roupa</button>
-              </div>
-
-              <!-- Seção para atualizar imagem da roupa -->
-              <div class="form-section">
-                  <h3>Atualizar Nome e Imagem da Roupa</h3>
-                  <input type="text" id="idRoupa" placeholder="ID da Roupa">
-                  <input type="text" id="novoNome" placeholder="Novo Nome">
-                  <input type="text" id="novaImagem" placeholder="Nova Imagem URL">
-                  <button onclick="atualizarRoupa()">Atualizar Roupa</button>
-              </div>
-          </div>
-
-          <!-- Seção de produtos cadastrados -->
-          <h3 class="produtos-title">As Roupas Cadastradas</h3>
-          <div class="produtos-container" id="produtos-container-admin">
-              <!-- Os produtos serão adicionados aqui dinamicamente -->
-          </div>
-        </section>
+        
 
         <section id="sobre">
           <div class="sobre-container">

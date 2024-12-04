@@ -15,7 +15,7 @@
   
   /* Cabeçalho */
   header.navbar {
-    background: linear-gradient(90deg, #f06292, #f48fb1);
+    background: linear-gradient(90deg, #468bc3, #62caf0);
     color: white;
     text-align: center;
     padding: 1rem 0;
@@ -70,7 +70,7 @@
   
   .product-info h2 {
     font-size: 1.8rem;
-    color: #f06292;
+    color: #468bc3;
     margin-bottom: 1rem;
   }
   
@@ -102,21 +102,21 @@
   }
   
   .product-info .add-to-cart {
-    background: #f06292;
+    background: #62caf0;
     color: white;
   }
   
   .product-info .add-to-cart:hover {
-    background: #d81b60;
+    background: #468bc3;
   }
   
   .product-info .size-chart {
-    background: #f48fb1;
+    background: #62caf0;
     color: white;
   }
   
   .product-info .size-chart:hover {
-    background: #c2185b;
+    background: #468bc3;
   }
   
   /* Produtos Similares */
@@ -128,7 +128,7 @@
     font-size: 1.6rem;
     margin-bottom: 1.5rem;
     color: #333;
-    border-bottom: 2px solid #f06292;
+    border-bottom: 2px solid #468bc3;
     padding-bottom: 0.5rem;
   }
   
@@ -160,7 +160,7 @@
   
   .produto p {
     font-size: 1rem;
-    color: #f06292;
+    color: #62caf0;
     font-weight: bold;
     margin-bottom: 1rem;
   }

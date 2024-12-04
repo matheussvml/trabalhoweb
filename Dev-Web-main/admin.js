@@ -38,7 +38,7 @@ async function carregarRoupas() {
             deletarBtn.textContent = "Deletar"
 
             const descRoupa = document.createElement("p")
-            descRoupa.textContent = `Descrição: ${roupa.desc}`
+            descRoupa.textContent = `Descrição: ${roupa.descr}`
             
             deletarBtn.addEventListener("click", ()=>{
                 deletarRoupa(roupa.id)
@@ -60,7 +60,7 @@ async function carregarRoupas() {
                 inputUpdateNome.value = roupa.nome
                 inputUpateImg.value = roupa.imagem
                 inputCategoria.value = roupa.categoria
-                inputdesc.value = roupa.desc
+                inputdesc.value = roupa.descr
                 
             }})
 
@@ -154,7 +154,7 @@ async function atualizarRoupa() {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}` // Adiciona o token de autenticação
             },
-            body: JSON.stringify({ nome: novoNome, imagem: novaImagem, preco: parseFloat(novoPreco), categoria: novaCategoria, desc: novadesc })
+            body: JSON.stringify({ nome: novoNome, imagem: novaImagem, preco: parseFloat(novoPreco), categoria: novaCategoria, descr: novadesc })
         });
 
         if (response.ok) {

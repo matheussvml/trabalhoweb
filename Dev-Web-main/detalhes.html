@@ -31,7 +31,8 @@
         </div>
 
         <!-- Produtos Similares -->
-        <div class="produtos-container" id="produtos-container"></div>
+        <div class="produtos-container" id="produtos-container">
+        </div>
     </main>
 
     <footer>
@@ -68,7 +69,7 @@ async function mostrarDetalhes() {
         document.getElementById('product-name').textContent = roupa.nome || 'Nome não disponível';
         document.getElementById('current-price').textContent = `Preço: R$ ${precoFormatado}`;
         document.getElementById('product-category').textContent = `Categoria: ${roupa.categoria || 'Não especificada'}`;
-        document.getElementById('product-description').textContent = `Descrição: ${roupa.desc || 'Sem descrição'}`;
+        document.getElementById('product-description').textContent = `Descrição: ${roupa.descr || 'Sem descrição'}`;
     } catch (error) {
         console.error('Erro ao carregar os detalhes do produto:', error);
         alert('Erro ao carregar os detalhes do produto. Tente novamente mais tarde.');
@@ -126,5 +127,8 @@ async function mostrarDetalhes() {
             mostrarDetalhes();
         });
     </script>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
